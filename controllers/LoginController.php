@@ -80,10 +80,17 @@ class LoginController {
 
                     //  Enviar el email
                     $email = new Email($usuario->email, $usuario->nombre, $usuario->token);
-                    $email->enviarInstrucciones();
-
-                    // Alerta de exito
-                    Usuario::setAlerta('exito', 'Revisa tu email');
+                    if($email->enviarInstrucciones()) {
+                        // Alerta de exito
+                        Usuario::setAlerta('exito', 'Revisa tu email');
+                    } else {
+                        $detalleError = $email->getUltimoError();
+                        $mensaje = 'No se pudo enviar el email. Revisa configuración SMTP.';
+                        if($detalleError) {
+                            $mensaje .= ' Detalle: ' . $detalleError;
+                        }
+                        Usuario::setAlerta('error', $mensaje);
+                    }
                  } else {
                      Usuario::setAlerta('error', 'El Usuario no existe o no esta confirmado');
                      
@@ -165,7 +172,19 @@ class LoginController {
 
                     // Enviar el Email
                     $email = new Email($usuario->email, $usuario->nombre, $usuario->token);
-                    $email->enviarConfirmacion();
+                    if(!$email->enviarConfirmacion()) {
+                        $detalleError = $email->getUltimoError();
+                        $mensaje = 'No se pudo enviar el email de confirmación. Revisa configuración SMTP.';
+                        if($detalleError) {
+                            $mensaje .= ' Detalle: ' . $detalleError;
+                        }
+                        Usuario::setAlerta('error', $mensaje);
+                        $router->render('auth/crear-cuenta', [
+                            'usuario' => $usuario,
+                            'alertas' => Usuario::getAlertas()
+                        ]);
+                        return;
+                    }
 
                     // Crear el usuario
                     $resultado = $usuario->guardar();
