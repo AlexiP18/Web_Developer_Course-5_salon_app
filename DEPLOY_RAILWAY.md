@@ -31,3 +31,5 @@
 ## Notas
 - El start command ya está definido en `railway.json`.
 - La app ya usa rutas relativas para `/api/*` y no depende de `localhost`.
+- Si ves `Call to undefined function mysqli_connect()`, agrega en Railway:
+  - `NIXPACKS_PHP_EXTENSIONS=mysqli`
