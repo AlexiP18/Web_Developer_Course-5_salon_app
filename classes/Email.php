@@ -27,7 +27,17 @@ class Email {
     }
 
     private function getAppUrl() : string {
-        return rtrim(getenv('APP_URL') ?: 'http://localhost:3000', '/');
+        $appUrl = trim((string) (getenv('APP_URL') ?: ''));
+        if($appUrl !== '') {
+            return rtrim($appUrl, '/');
+        }
+
+        $railwayDomain = trim((string) (getenv('RAILWAY_PUBLIC_DOMAIN') ?: ''));
+        if($railwayDomain !== '') {
+            return 'https://' . rtrim($railwayDomain, '/');
+        }
+
+        return 'http://localhost:3000';
     }
 
     private function crearContenidoConfirmacion() : string {
