@@ -85,7 +85,7 @@ class LoginController {
                         Usuario::setAlerta('exito', 'Revisa tu email');
                     } else {
                         $detalleError = $email->getUltimoError();
-                        $mensaje = 'No se pudo enviar el email. Revisa configuración SMTP.';
+                        $mensaje = 'No se pudo enviar el email. Revisa la configuración de correo (SMTP o API).';
                         if($detalleError) {
                             $mensaje .= ' Detalle: ' . $detalleError;
                         }
@@ -174,7 +174,7 @@ class LoginController {
                     $email = new Email($usuario->email, $usuario->nombre, $usuario->token);
                     if(!$email->enviarConfirmacion()) {
                         $detalleError = $email->getUltimoError();
-                        $mensaje = 'No se pudo enviar el email de confirmación. Revisa configuración SMTP.';
+                        $mensaje = 'No se pudo enviar el email de confirmación. Revisa la configuración de correo (SMTP o API).';
                         if($detalleError) {
                             $mensaje .= ' Detalle: ' . $detalleError;
                         }
