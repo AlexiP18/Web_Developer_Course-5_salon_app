@@ -23,6 +23,7 @@ class LoginController {
                     if( $usuario->comprobarPasswordAndVerificado($auth->password) ) {
                         // Autenticar el usuario
                         session_start();
+                        session_regenerate_id(true);
 
                         $_SESSION['id'] = $usuario->id;
                         $_SESSION['nombre'] = $usuario->nombre . " " . $usuario->apellido;
@@ -35,6 +36,7 @@ class LoginController {
                             header('Location: /admin');
                             exit;
                         } else {
+                            unset($_SESSION['admin']);
                             header('Location: /cita');
                             exit;
                         }

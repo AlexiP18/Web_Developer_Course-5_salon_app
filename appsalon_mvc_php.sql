@@ -79,7 +79,7 @@ INSERT INTO `servicios` (`id`, `nombre`, `precio`) VALUES
 (11, 'Tratamiento Capilar', 150.00);
 
 INSERT INTO `usuarios` (`id`, `nombre`, `apellido`, `email`, `password`, `telefono`, `admin`, `confirmado`, `token`) VALUES
-(9, ' Juanm', 'De la torre', 'correo@correo.com', '$2y$10$9TTiKdZXQaUQaSbVKd7wPOucLusU8ebkv2h2IgqNjQXs.uLTW7CAq', '1234567890', 0, 1, '');
+(9, ' Juanm', 'De la torre', 'correo@correo.com', '$2y$10$9TTiKdZXQaUQaSbVKd7wPOucLusU8ebkv2h2IgqNjQXs.uLTW7CAq', '1234567890', 1, 1, '');
 
 
 
