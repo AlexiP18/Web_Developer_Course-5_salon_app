@@ -29,14 +29,13 @@ class LoginController {
                         $_SESSION['nombre'] = $usuario->nombre . " " . $usuario->apellido;
                         $_SESSION['email'] = $usuario->email;
                         $_SESSION['login'] = true;
+                        $_SESSION['admin'] = ((int) $usuario->admin === 1) ? 1 : 0;
 
                         // Redireccionamiento
-                        if($usuario->admin === "1") {
-                            $_SESSION['admin'] = $usuario->admin ?? null;
+                        if((int) $usuario->admin === 1) {
                             header('Location: /admin');
                             exit;
                         } else {
-                            unset($_SESSION['admin']);
                             header('Location: /cita');
                             exit;
                         }
