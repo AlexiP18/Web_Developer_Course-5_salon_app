@@ -30,8 +30,19 @@ function isAuth() : void {
 }
 
 function isAdmin() : void {
-    if(!isset($_SESSION['admin']) || (int) $_SESSION['admin'] !== 1) {
-        header('Location: /');
-        exit;
+    if(isset($_SESSION['admin']) && (int) $_SESSION['admin'] === 1) {
+        return;
     }
+
+    // Recuperar rol admin si la sesión quedó incompleta pero existe usuario autenticado
+    if(isset($_SESSION['id']) && class_exists('\Model\Usuario')) {
+        $usuario = \Model\Usuario::find((int) $_SESSION['id']);
+        if($usuario && (int) $usuario->admin === 1) {
+            $_SESSION['admin'] = 1;
+            return;
+        }
+    }
+
+    header('Location: /');
+    exit;
 }
