@@ -21,8 +21,32 @@ function esUltimo(string $actual, string $proximo): bool {
     return false;
 }
 
+function iniciarSesion() : void {
+    if(session_status() === PHP_SESSION_ACTIVE) {
+        return;
+    }
+
+    $isHttps = (
+        (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
+        || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && strtolower((string) $_SERVER['HTTP_X_FORWARDED_PROTO']) === 'https')
+        || (isset($_SERVER['HTTP_X_FORWARDED_SSL']) && strtolower((string) $_SERVER['HTTP_X_FORWARDED_SSL']) === 'on')
+    );
+
+    session_set_cookie_params([
+        'lifetime' => 0,
+        'path' => '/',
+        'secure' => $isHttps,
+        'httponly' => true,
+        'samesite' => 'Lax'
+    ]);
+
+    session_start();
+}
+
 // Función que revisa que el usuario este autenticado
 function isAuth() : void {
+    iniciarSesion();
+
     if(!isset($_SESSION['login'])) {
         header('Location: /');
         exit;
@@ -30,6 +54,8 @@ function isAuth() : void {
 }
 
 function isAdmin() : void {
+    iniciarSesion();
+
     if(isset($_SESSION['admin']) && (int) $_SESSION['admin'] === 1) {
         return;
     }

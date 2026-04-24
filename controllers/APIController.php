@@ -13,7 +13,7 @@ class APIController {
     }
 
     public static function guardar() {
-        session_start();
+        iniciarSesion();
         isAuth();
 
         if($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -65,7 +65,7 @@ class APIController {
     }
 
     public static function eliminar() {
-        session_start();
+        iniciarSesion();
         isAdmin();
 
         if($_SERVER['REQUEST_METHOD'] === 'POST') {
