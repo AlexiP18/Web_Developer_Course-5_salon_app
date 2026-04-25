@@ -10,6 +10,9 @@ use Controllers\ServicioController;
 use MVC\Router;
 $router = new Router();
 
+// Iniciar sesión para toda la petición (evita inconsistencias entre rutas)
+iniciarSesion();
+
 // Iniciar Sesión
 $router->get('/', [LoginController::class, 'login']);
 $router->post('/', [LoginController::class, 'login']);

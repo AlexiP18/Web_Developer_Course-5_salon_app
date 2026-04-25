@@ -30,6 +30,7 @@ class LoginController {
                         $_SESSION['email'] = $usuario->email;
                         $_SESSION['login'] = true;
                         $_SESSION['admin'] = ((int) $usuario->admin === 1) ? 1 : 0;
+                        setAuthCookie((int) $usuario->id);
 
                         // Redireccionamiento
                         if((int) $usuario->admin === 1) {
@@ -57,6 +58,11 @@ class LoginController {
     public static function logout() {
         iniciarSesion();
         $_SESSION = [];
+        clearAuthCookie();
+        if (ini_get('session.use_cookies')) {
+            $params = session_get_cookie_params();
+            setcookie(session_name(), '', time() - 42000, $params['path'], $params['domain'], $params['secure'], $params['httponly']);
+        }
         session_destroy();
         header('Location: /');
         exit;
